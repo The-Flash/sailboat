@@ -1,4 +1,4 @@
-# Full Stack Javascript Test
+# Full Stack Javascript
 
 ## Tech Stack
 
