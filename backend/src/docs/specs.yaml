@@ -1,0 +1,224 @@
+openapi: "3.0.0"
+info:
+  title: Test Project API Docs
+  description: API docs describing specs for Test Project
+  version: 1.0
+servers:
+  - url: "http://localhost:8000/"
+    description: "Local server"
+security:
+  - bearerAuth: []
+
+paths:
+  /api/v1/todos/create:
+    post:
+      summary: Create a task/todo
+      description: Create a task/todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/TaskInput"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateTaskResponse"
+        400:
+          description: Error - Bad Request
+  /api/v1/todos/:
+    get:
+      summary: Get all tasks/todos
+      description: Get all tasks/todos
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/GetTaskResponse"
+  
+  /api/v1/todos/add-subtask/{todo_id}:
+    post:
+      summary: Add a subtask to a todo
+      parameters:
+        - in: path
+          name: todo_id
+          schema:
+            type: string
+          required: true
+          description: Id of parent task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/TaskInput"
+      responses:
+        200:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SubTask"
+
+  /api/v1/todos/update-task/{parent_id}:
+    put:
+      summary: Update a parent task only
+      parameters:
+        - in: path
+          name: parent_id
+          schema:
+            type: string
+          required: true
+          description: Id of parent task
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/StatusInput"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/UpdateTaskResponse"
+  
+  /api/v1/todos/update-task/{parent_id}/{child_id}:
+    put:
+      summary: Update a child task
+      parameters:
+        - in: path
+          name: parent_id
+          schema:
+            type: string
+          required: true
+          description: Id of parent task
+        - in: path
+          name: child_id
+          schema:
+            type: string
+          required: false
+          description: Id of sub-task
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/StatusInput"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/UpdateTaskResponse"
+
+components:
+  schemas:
+    TaskInput:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          default: "Task Title"
+    
+    StatusInput:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          default: "completed"
+          description: completed | pending
+
+    SubTask:
+      type: object
+      properties:
+        id:
+          type: string
+          default: "xdfdDclIdsdsLX"
+        title:
+          type: string
+          default: "Task Title"
+        status:
+          type: string
+          default: "completed"
+        created_at:
+          type: string
+          default: "2023-01-12T23:36:45.996Z"
+
+    UpdateTaskResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Task updated"
+
+    CreateTaskResponse:
+      type: object
+      required:
+        - id
+        - title
+        - status
+        - created_at
+        - subtasks
+      properties:
+        id:
+          type: string
+          default: "xdfdDclIdsdsLX"
+        title:
+          type: string
+          default: "Task Title"
+        status:
+          type: string
+          default: "pending"
+        created_at:
+          type: string
+          default: "2023-01-12T23:36:45.996Z"
+        subtasks:
+          type: array
+          default: []
+
+    GetTaskResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            default: "xdfdDclIdsdsLX"
+          title:
+            type: string
+            default: "Task Title"
+          status:
+            type: string
+            default: "pending"
+          created_at:
+            type: string
+            default: "2023-01-12T23:36:45.996Z"
+          subtasks:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  default: "fdfBDclIdsdsLY"
+                title:
+                  type: string
+                  default: "Subtask Task Title"
+                status:
+                  type: string
+                  default: "pending"
+                created_at:
+                  type: string
+                  default: "2023-01-12T23:40:45.996Z"

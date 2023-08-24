@@ -1,0 +1,17 @@
+{
+    "name": "sailboat_todo",
+    "version": "1.0.0",
+    "scripts": {
+        "run:backend": "cd backend/ && npm start",
+        "run:frontend": "cd frontend/ && npm start",
+        "run:backend:dev": "cd backend/ && npm run dev",
+        "run:frontend:dev": "cd frontend/ && npm run dev",
+        "test": "cd backend/ && npm test",
+        "dev": "concurrently \"npm:run:backend:dev\" \"npm:run:frontend:dev\"",
+        "build:frontend": "cd frontend/ && npm run build",
+        "seed": "cd backend/ && npm run seed"
+    },
+    "devDependencies": {
+        "concurrently": "^7.6.0"
+    }
+}
